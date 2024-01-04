@@ -14,11 +14,11 @@ module.exports.index = async (req, res) => {
       deleted: false
     }
 
-    if(req.query.status) {
+    if (req.query.status) {
       find.status = req.query.status;
     }
     // Search
-    if(req.query.keyword) {
+    if (req.query.keyword) {
       const regex = new RegExp(req.query.keyword, "i");
       find.title = regex;
     }
@@ -30,6 +30,9 @@ module.exports.index = async (req, res) => {
     // End Pagination
 
     const products = await Product.find(find)
+      .sort({
+        position: "desc"
+      })
       .limit(objectPagination.limitItems)
       .skip(objectPagination.skip);
 
@@ -75,11 +78,26 @@ module.exports.changeMulti = async (req, res) => {
       break;
     case "delete-all":
       await Product.updateMany({
-        _id: {$in: ids}
+        _id: { $in: ids }
       }, {
         deleted: true,
         deletedAt: new Date()
-      })
+      });
+      break;
+    case "change-position":
+      console.log(ids);
+      for (const item of ids) {
+        let [id, position] = item.split("-");
+        position = parseInt(position);
+        
+
+        await Product.updateOne({
+          _id: id
+        }, {
+          position: position
+        });
+      }
+      break;
     default:
       break;
   }
@@ -99,7 +117,7 @@ module.exports.deleteItem = async (req, res) => {
     })
   } catch (error) {
     console.log(error);
-    
+
   }
   res.redirect("back");
 }
