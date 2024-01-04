@@ -1,11 +1,11 @@
 extends ../../layouts/default.pug
 include ../../mixins/filter-state.pug
 include ../../mixins/search.pug
+include ../../mixins/pagination.pug
 
 block main
   h1(class="mb-4") #{pageTitle}
-
-   .card.mb-3
+  .card.mb-3
     .card-header Bộ lọc và Tìm kiếm
     .card-body
       .row
@@ -13,8 +13,7 @@ block main
           +filter-state(filterState)
         .col-6
           +search(keyword)
-
-    .card.mb-3
+  .card.mb-3
     .card-header Danh sách
     .card-body
       table.table.table-hover.table-sm
@@ -26,7 +25,6 @@ block main
             th Giá
             th Trạng thái
             th Hành động
-
         tbody
           each item, index in products
             tr 
@@ -42,9 +40,30 @@ block main
               td #{item.price}$
               td
                 if(item.status == "active")
-                  a(href="#" class="badge badge-success") Hoạt động
+                  a(
+                    href="javascript:;"
+                    class="badge badge-success"
+                    data-id=item.id
+                    data-status=item.status
+                    button-change-status
+                  ) Hoạt động
                 else
-                  a(href="#" class="badge badge-danger") Dừng hoạt động
+                  a(
+                    href="javascript:;"
+                    class="badge badge-danger"
+                    data-id=item.id
+                    data-status=item.status
+                    button-change-status
+                  ) Dừng hoạt động
               td
                 button(class="btn btn-warning btn-sm") Sửa
                 button(class="btn btn-danger btn-sm ml-1") Xóa
+
+  +pagination(pagination)
+
+  form(
+    form-change-status
+    action=""
+    method="POST"
+    data-path=`/${prefixAdmin}/products/change-status`
+  )
