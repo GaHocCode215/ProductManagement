@@ -110,6 +110,13 @@ if(formChangeMulti) {
   formChangeMulti.addEventListener("submit", (event) => {
     event.preventDefault();
 
+    const type = event.target.elements.value;
+    if(type == "delete-all"){
+      const isConfirm = confirm("Bạn có chắc muốn xóa những bản ghi này");
+      if(!isConfirm){
+        return;
+      }
+    }
     const inputsChecked = document.querySelectorAll("input[name='id']:checked");
     if(inputsChecked.length > 0) {
       const ids = [];
