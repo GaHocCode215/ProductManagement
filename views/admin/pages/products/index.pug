@@ -3,8 +3,10 @@ include ../../mixins/filter-state.pug
 include ../../mixins/search.pug
 include ../../mixins/pagination.pug
 include ../../mixins/form-change-multi.pug
+include ../../mixins/alert.pug
 
 block main
+  +alert-success(5000)
   h1(class="mb-4") #{pageTitle}
   .card.mb-3
     .card-header Bộ lọc và Tìm kiếm
