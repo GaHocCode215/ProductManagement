@@ -200,4 +200,22 @@ module.exports.editPatch = async (req, res) => {
   } catch (error) {
     res.redirect(`/${systemConfig.prefixAdmin}/products`);
   }
+};
+
+// [GET] /admin/products/detail/:id
+module.exports.detail = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const product = await Product.findOne({
+      _id: id,
+      deleted: false
+    });
+
+    res.render("admin/pages/products/detail", {
+      pageTitle: "Chi tiết sản phẩm",
+      product: product
+    })
+  } catch (error) {
+    res.redirect(`/${systemConfig.prefixAdmin}/products`);
+  }
 }
