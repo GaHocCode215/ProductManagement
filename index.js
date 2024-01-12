@@ -8,9 +8,12 @@ const flash = require('express-flash');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 
+
 dotenv.config();
 
 databse.connect();
+
+
 
 const routesAdmin = require("./routes/admin/index.route");
 const routesClient = require("./routes/client/index.route");
@@ -23,9 +26,11 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(methodOverride('_method'));
 
 app.set("views", "./views");
+app.set("views", `${__dirname}/views`);
 app.set("view engine", "pug");
 
 app.use(express.static("public"));
+app.use(express.static(`${__dirname}/public`));
 // flash
 app.use(cookieParser('GAHOCCODE'));
 app.use(session({
