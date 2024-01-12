@@ -99,3 +99,6 @@
   display: none;
 }
 /* End Image Preview */
+[sort]{
+  margin-left: 4px;
+}
