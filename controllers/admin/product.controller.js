@@ -1,8 +1,9 @@
 const Product = require("../../models/product.model");
 const filterStatusHelper = require("../../helpers/filter-state.helper");
 const paginationHelper = require("../../helpers/pagination.helper");
+const ProductCategory = require("../../models/product-category.model");
 const systemConfig = require("../../config/system");
-
+const createTreeHelper = require("../../helpers/create-tree.helper");
 // [GET] /admin/products/
 module.exports.index = async (req, res) => {
   try {
@@ -30,9 +31,9 @@ module.exports.index = async (req, res) => {
     // End Pagination
     //Sort
     const sort = {};
-    if(req.query.sortKey && req.query.sortValue){
+    if (req.query.sortKey && req.query.sortValue) {
       sort[req.query.sortKey] = req.query.sortValue;
-    }else{
+    } else {
       sort["position"] = "desc";
     }
     //End Sort
@@ -136,8 +137,14 @@ module.exports.deleteItem = async (req, res) => {
 
 // [GET] /admin/products/create
 module.exports.create = async (req, res) => {
+  const records = await ProductCategory.find({
+    deleted: false,
+  });
+
+  const newRecords = createTreeHelper(records);
   res.render("admin/pages/products/create", {
-    pageTitle: "Thêm mới sản phẩm"
+    pageTitle: "Thêm mới sản phẩm",
+    records: newRecords
   });
 };
 
@@ -176,10 +183,15 @@ module.exports.edit = async (req, res) => {
       _id: id,
       deleted: false
     });
+    const records = await ProductCategory.find({
+      deleted: false,
+    });
 
+    const newRecords = createTreeHelper(records);
     res.render("admin/pages/products/edit", {
       pageTitle: "Chỉnh sửa sản phẩm",
-      product: product
+      product: product,
+      records: newRecords
     });
   } catch (error) {
     res.redirect(`${systemConfig.prefixAdmin}/products`);
@@ -195,7 +207,7 @@ module.exports.editPatch = async (req, res) => {
     req.body.stock = parseInt(req.body.stock);
     req.body.position = parseInt(req.body.position);
 
-    if(req.file && req.file.filename) {
+    if (req.file && req.file.filename) {
       req.body.thumbnail = `/uploads/${req.file.filename}`;
     }
 
