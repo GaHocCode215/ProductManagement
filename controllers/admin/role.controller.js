@@ -40,6 +40,7 @@ module.exports.edit = async (req, res) => {
     pageTitle: "Chỉnh sửa Nhóm quyền",
     record: record
   });
+
 }
 
 // [PATCH] /admin/roles/edit/:id
@@ -49,7 +50,7 @@ module.exports.editPatch = async (req, res) => {
       _id: req.params.id,
       deleted: false
     }, req.body);
-
+    req.flash("success", "Cập nhật thành công!");
     res.redirect(`back`);
   } catch (error) {
     res.redirect(`back`);
@@ -82,7 +83,7 @@ module.exports.permissionsPatch = async (req, res) => {
     }
     req.flash("success", "Cập nhật phân quyền thành công!");
   } catch (error) {
-    req.flash("success", "Cập nhật phân quyền không thành công!");
+    req.flash("error", "Cập nhật phân quyền không thành công!");
   }
 
   res.redirect("back");
