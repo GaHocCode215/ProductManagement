@@ -5,7 +5,8 @@ block main
   if(product.title)
     h1(class="mb-4") #{product.title}
 
-  
+  //- if(product.parent_id)
+  //-   div(class="mb-4") Danh mục cha: <b>#{product.price}$</b> 
   if (product.price)
     div(class="mb-4") Giá: <b>#{product.price}$</b>
 

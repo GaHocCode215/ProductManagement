@@ -46,12 +46,14 @@ block main
                     href="javascript:;"
                     class="badge badge-success"
                     data-status="active"
+                    button-change-status
                   ) Hoạt động
                 else
                   a(
                     href="javascript:;"
                     class="badge badge-danger"
                     data-status="inactive"
+                    button-change-status
                   ) Dừng hoạt động
               td
                 a(
@@ -65,3 +67,9 @@ block main
                 button(
                   class="btn btn-danger btn-sm ml-1"
                 ) Xóa
+  form(
+    form-change-status
+    action=""
+    method="POST"
+    data-path=`/${prefixAdmin}/accounts/change-status`
+  )

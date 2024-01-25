@@ -56,7 +56,7 @@ module.exports.changeStatus = async (req, res) => {
 
 
     res.redirect("back");
-};
+}
 // [GET] /admin/products-category/edit/:id
 module.exports.edit = async (req, res) => {
     try {
@@ -105,3 +105,20 @@ module.exports.editPatch = async (req, res) => {
         res.redirect(`/${systemConfig.prefixAdmin}/products-category`);
     }
 };
+// [GET] /admin/products-category/detail/:id
+module.exports.detail = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const product = await ProductCategory.findOne({
+            _id: id,
+            deleted: false
+        });
+        console.log(product)
+        res.render("admin/pages/products-category/detail", {
+            pageTitle: "Chi tiết danh mục sản phẩm",
+            product: product
+        })
+    } catch (error) {
+        res.redirect(`/${systemConfig.prefixAdmin}/products-category`);
+    }
+}
