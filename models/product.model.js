@@ -4,7 +4,7 @@ mongoose.plugin(slug);
 
 const productSchema = new mongoose.Schema({
     title: String,
-    slug:{
+    slug: {
         type: String,
         slug: "title",
         unique: true
@@ -20,8 +20,12 @@ const productSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    deleteAt: Date
-},{
+    deleteAt: Date,
+    createdBy: {
+        accountId: String,
+        createdAt: Date
+    },
+}, {
     timestamps: true
 });
 
