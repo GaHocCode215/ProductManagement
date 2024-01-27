@@ -72,10 +72,16 @@ module.exports.changeStatus = async (req, res) => {
   const status = req.params.status;
   const id = req.params.id;
 
+  const objectUpdatedBy = {
+    accountId: res.locals.user.id,
+    updatedAt: new Date()
+  };
+
   await Product.updateOne({
     _id: id
   }, {
-    status: status
+    status: status,
+    $push: { updatedBy: objectUpdatedBy }
   });
   req.flash('success', 'Cập nhật trạng thái thành công!');
 
@@ -102,7 +108,10 @@ module.exports.changeMulti = async (req, res) => {
         _id: { $in: ids }
       }, {
         deleted: true,
-        deletedAt: new Date()
+        deletedBy: {
+          accountId: res.locals.user.id,
+          deletedAt: new Date()
+        }
       });
       req.flash('success', 'Xóa thành công!');
       break;
@@ -136,7 +145,10 @@ module.exports.deleteItem = async (req, res) => {
       _id: id
     }, {
       deleted: true,
-      deletedAt: new Date()
+      deletedBy: {
+        accountId: res.locals.user.id,
+        deletedAt: new Date()
+      }
     })
   } catch (error) {
     console.log(error);
@@ -222,11 +234,18 @@ module.exports.editPatch = async (req, res) => {
     if (req.file && req.file.filename) {
       req.body.thumbnail = `/uploads/${req.file.filename}`;
     }
-
+    const objectUpdatedBy = {
+      accountId: res.locals.user.id,
+      updatedAt: new Date()
+    };
+    
     await Product.updateOne({
       _id: id,
       deleted: false
-    }, req.body);
+    }, {
+      ...req.body,
+      $push: { updatedBy: objectUpdatedBy }
+    });
 
     req.flash("success", "Cập nhật sản phẩm thành công!");
 
