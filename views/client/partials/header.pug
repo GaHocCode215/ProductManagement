@@ -1,3 +1,5 @@
+include ../mixins/sub-menu.pug
+
 header.header
   .container
     .row.align-items-center
@@ -13,3 +15,5 @@ header.header
               a(href="/") Trang chủ
             li
               a(href="/products") Sản phẩm
+                if(layoutCategoryProducts)
+                  +sub-menu(layoutCategoryProducts)
