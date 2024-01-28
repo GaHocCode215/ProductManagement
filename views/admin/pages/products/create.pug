@@ -1,12 +1,9 @@
 extends ../../layouts/default.pug
 include ../../mixins/alert.pug
 include ../../mixins/select-tree.pug
-
 block main
   +alert-error(5000)
-
   h1(class="mb-4") Thêm mới sản phẩm
-
   form(
     action=`/${prefixAdmin}/products/create`
     id="form-create-product"
@@ -32,6 +29,25 @@ block main
         option(value="") -- Chọn danh mục --
         if(records)
           +select-tree(records)
+    div(class="form-group form-check form-check-inline")
+      input(
+        type="radio"
+        class="form-check-input"
+        id="featured1"
+        name="featured"
+        value="1"
+      )
+      label(for="featured1" class="form-check-label") Nổi bật
+    div(class="form-group form-check form-check-inline")
+      input(
+        type="radio"
+        class="form-check-input"
+        id="featured0"
+        name="featured"
+        value="0"
+        checked
+      )
+      label(for="featured0" class="form-check-label") Không
     div(class="form-group")
       label(for="desc") Mô tả
       textarea(
@@ -78,7 +94,7 @@ block main
         class="form-control-file"
         id="thumbnail"
         name="thumbnail"
-         accept="image/*"
+        accept="image/*"
         upload-image-input
       )
       img(
@@ -120,5 +136,3 @@ block main
         type="submit"
         class="btn btn-primary"
       ) Tạo mới
-
-  script(src="/admin/js/product.js")

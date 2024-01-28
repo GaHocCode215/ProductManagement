@@ -31,10 +31,11 @@ const productSchema = new mongoose.Schema({
     },
     updatedBy: [
         {
-          accountId: String,
-          updatedAt: Date
+            accountId: String,
+            updatedAt: Date
         }
-      ]
+    ],
+    featured: String
 }, {
     timestamps: true
 });
